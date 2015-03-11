@@ -4,6 +4,7 @@ package com.testroom.mode;
 import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.ScreenAdapter;
+import com.testroom.physics.PhysicsManager;
 import com.testroom.rendering.CharacterCenteredCamera;
 import com.testroom.TestRoom;
 import com.testroom.character.CharacterBuilder;
@@ -40,6 +41,7 @@ public class GameMode extends ScreenAdapter{
 	
 	@Override
 	public void render(float dt) {
+		PhysicsManager.getInstance().update(dt);
 		engine.update(dt);
 		cam.follow();
 		draw(dt);
