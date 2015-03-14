@@ -1,7 +1,5 @@
 package com.testroom.character;
 
-import systems.PlayerSystem;
-
 import com.badlogic.ashley.core.Component;
 import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
@@ -14,8 +12,8 @@ import com.testroom.components.PlayerComponent;
 import com.testroom.components.StateComponent;
 import com.testroom.components.TextureComponent;
 import com.testroom.components.TransformComponent;
-
-import controls.PlayerControls;
+import com.testroom.controls.PlayerControls;
+import com.testroom.systems.PlayerSystem;
  
 public class CharacterBuilder extends Component {
 	private Engine engine;

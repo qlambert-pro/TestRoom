@@ -1,10 +1,9 @@
-package controls;
+package com.testroom.controls;
 
-
-import systems.PlayerSystem;
 
 import com.badlogic.gdx.controllers.Controller;
 import com.badlogic.gdx.controllers.ControllerAdapter;
+import com.testroom.systems.PlayerSystem;
 
 public class PlayerControls extends ControllerAdapter {
 	private PlayerSystem system;

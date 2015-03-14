@@ -1,4 +1,4 @@
-package controls;
+package com.testroom.controls;
 
 import com.badlogic.gdx.controllers.PovDirection;
 

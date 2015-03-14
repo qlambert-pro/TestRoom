@@ -1,4 +1,4 @@
-package systems;
+package com.testroom.systems;
 
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.EntitySystem;
