@@ -3,9 +3,15 @@ package com.testroom.mode;
 
 import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
+import com.badlogic.gdx.controllers.Controller;
+import com.badlogic.gdx.controllers.Controllers;
+import com.badlogic.gdx.graphics.GL20;
 import com.testroom.physics.PhysicsManager;
 import com.testroom.rendering.CharacterCenteredCamera;
+import com.testroom.systems.AnimationSystem;
+import com.testroom.systems.RenderingSystem;
 import com.testroom.TestRoom;
 import com.testroom.character.CharacterBuilder;
 import com.testroom.components.TransformComponent;
@@ -33,14 +39,19 @@ public class GameMode extends ScreenAdapter{
 		map = mapLoader.load();
 		
 		/* Init Character */
-		//TODO get controller ref
-		Entity e = characterBuilder.build(null, map.getSpawn());
+		Controller c = Controllers.getControllers().first();
+		Entity e = characterBuilder.build(c, map.getSpawn());
 		cam = new  CharacterCenteredCamera(e.getComponent(TransformComponent.class));
 
+		engine.addSystem(new AnimationSystem());
+		engine.addSystem(new RenderingSystem(cam));
 	}
 	
 	@Override
 	public void render(float dt) {
+		Gdx.gl.glClearColor(1f, 1f, 1f, 1);
+		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+		
 		PhysicsManager.getInstance().update(dt);
 		engine.update(dt);
 		cam.follow();

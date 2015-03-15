@@ -12,9 +12,4 @@ public class TestRoom extends Game {
 		gameMode = new GameMode(this);
 		setScreen(gameMode);
 	}
-
-	@Override
-	public void render () {
-		
-	}
 }

@@ -28,7 +28,7 @@ public class PlayerControls extends ControllerAdapter {
 	public boolean buttonUp (Controller controller, int buttonCode){
 		switch (buttonCode) {
 		case Xbox360Pad.BUTTON_A:
-			system.grab();
+			system.grabbing();
 			return true;
 		}
 		

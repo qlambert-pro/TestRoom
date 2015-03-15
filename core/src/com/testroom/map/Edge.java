@@ -32,4 +32,8 @@ public class Edge implements PhysicsObject {
 		// :D	
 	}
 
+	public Body getBody() {
+		return body;
+	}
+
 }

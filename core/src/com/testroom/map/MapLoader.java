@@ -31,14 +31,13 @@ public class MapLoader {
 		engine = e;
 	}
 
-	public Map load() {
-		// TODO Auto-generated method stub
+	public Map load() { 
 		tiledMap = new TmxMapLoader().load("map.tmx");
 		tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap);
 		
 		edges = new LinkedList<Edge>();
 		
-		TiledMapTileLayer layer  = getLayer(LAYER);
+		layer  = getLayer(LAYER);
 		
 		for (int x = 0; x < layer.getWidth(); x++) {
 			for (int y = 0; y < layer.getHeight(); y++) {
