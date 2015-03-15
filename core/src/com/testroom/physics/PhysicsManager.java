@@ -5,6 +5,8 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.EdgeShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
+import com.badlogic.gdx.physics.box2d.Joint;
+import com.badlogic.gdx.physics.box2d.JointDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
@@ -113,5 +115,13 @@ public class PhysicsManager {
 		b.createFixture(fixtureDef);	    
 		b.setUserData(pds);
 		return b;
+	}
+	
+	public Joint createJoint(JointDef jointDef) {
+		return world.createJoint(jointDef);		
+	}
+	
+	public void destroyJoint(Joint joint) {
+		world.destroyJoint(joint);
 	}
 }

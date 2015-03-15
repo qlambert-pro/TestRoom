@@ -3,7 +3,6 @@ package com.testroom.character;
 import com.badlogic.ashley.core.Component;
 import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
-import com.badlogic.ashley.core.EntitySystem;
 import com.badlogic.gdx.controllers.Controller;
 import com.badlogic.gdx.math.Vector2;
 import com.testroom.components.AnimationComponent;
@@ -13,6 +12,7 @@ import com.testroom.components.StateComponent;
 import com.testroom.components.TextureComponent;
 import com.testroom.components.TransformComponent;
 import com.testroom.controls.PlayerControls;
+import com.testroom.rendering.GraphicsAsset;
 import com.testroom.systems.PlayerSystem;
  
 public class CharacterBuilder extends Component {
@@ -32,11 +32,14 @@ public class CharacterBuilder extends Component {
 		StateComponent state = new StateComponent();
 		TextureComponent texture = new TextureComponent();
 		
-		//TODO init animation
+		animation.animations.put(PlayerComponent.STATE_GRAB, GraphicsAsset.characterGrab);
+		animation.animations.put(PlayerComponent.STATE_GRABBING, GraphicsAsset.characterGrabbing);
+		animation.animations.put(PlayerComponent.STATE_JUMP, GraphicsAsset.characterJump);
 		
 		position.pos.set(p);
+		movement.velocity.set(1.0f,0.0f);
 		 
-		state.set(PlayerComponent.STATE_GRAB);
+		state.set(PlayerComponent.STATE_GRABBING);
 		
 		entity.add(animation);
 		entity.add(player);
