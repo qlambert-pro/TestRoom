@@ -14,21 +14,14 @@ import com.testroom.components.TextureComponent;
 import com.testroom.components.TransformComponent;
 
 public class RenderingSystem extends IteratingSystem {
-	static final float FRUSTUM_WIDTH = 10;
-	static final float FRUSTUM_HEIGHT = 15;
-	static final float PIXELS_TO_METRES = 1.0f / 32.0f;
 	
 	private SpriteBatch batch;
 	private Array<Entity> renderQueue;
 	private Camera cam;
-	private ComponentMapper<TextureComponent> textureM;
-	private ComponentMapper<TransformComponent> transformM;
 
 	public RenderingSystem(Camera cam) {
 		super(Family.getFor(TransformComponent.class, TextureComponent.class));
 	
-		textureM = ComponentMapper.getFor(TextureComponent.class);
-		transformM = ComponentMapper.getFor(TransformComponent.class);
 		renderQueue = new Array<Entity>();
 	
 		this.batch = new SpriteBatch();
@@ -44,13 +37,13 @@ public class RenderingSystem extends IteratingSystem {
 		batch.begin();
 		
 		for (Entity entity : renderQueue) {
-			TextureComponent tex = textureM.get(entity);
+			TextureComponent tex = entity.getComponent(TextureComponent.class);
 			
 			if (tex.region == null) {
 				continue;
 			}
 			
-			TransformComponent t = transformM.get(entity);
+			TransformComponent t = entity.getComponent(TransformComponent.class);
 		
 			float width = tex.region.getRegionWidth();
 			float height = tex.region.getRegionHeight();
@@ -61,7 +54,7 @@ public class RenderingSystem extends IteratingSystem {
 					   t.pos.x - originX, t.pos.y - originY,
 					   originX, originY,
 					   width, height,
-					   t.scale.x * PIXELS_TO_METRES, t.scale.y * PIXELS_TO_METRES,
+					   t.scale.x, t.scale.y,
 					   MathUtils.radiansToDegrees * t.rotation);
 		}
 		
@@ -72,7 +65,6 @@ public class RenderingSystem extends IteratingSystem {
 	@Override
 	protected void processEntity(Entity entity, float deltaTime) { 
 		renderQueue.add(entity);
-
 	}
 
 }

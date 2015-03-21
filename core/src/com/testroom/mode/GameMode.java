@@ -52,10 +52,11 @@ public class GameMode extends ScreenAdapter{
 		Gdx.gl.glClearColor(1f, 1f, 1f, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		
+
 		PhysicsManager.getInstance().update(dt);
-		engine.update(dt);
 		cam.follow();
 		draw(dt);
+		engine.update(dt);
 	}
 
 	private void draw(float dt) {
