@@ -37,7 +37,8 @@ public class CharacterBuilder extends Component {
 		animation.animations.put(PlayerComponent.STATE_JUMP, GraphicsAsset.characterJump);
 		
 		position.pos.set(p);
-		movement.velocity.set(1.0f,0.0f);
+		movement.velocity.set(0.0f * PlayerComponent.MOVE_VELOCITY,
+							  1.0f * PlayerComponent.MOVE_VELOCITY);
 		 
 		state.set(PlayerComponent.STATE_GRABBING);
 		

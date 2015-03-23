@@ -31,9 +31,8 @@ public class PlayerSystem extends EntitySystem{
 		
 		PhysicsDataStructure s = new PhysicsDataStructure(new PhysicsCharacter(this),
 				PhysicsObjectType.PLAYER);
-		this.body = PhysicsManager.getInstance().createDynamicRectangle(
-				tComp.pos.cpy(), new Vector2(PlayerComponent.WIDTH,
-											 PlayerComponent.HEIGHT), s);
+		this.body = PhysicsManager.getInstance().createDynamicCircle(
+				tComp.pos.cpy(), PlayerComponent.WIDTH/2, s);
 		body.setLinearVelocity(mComp.velocity);
 	}
 
@@ -43,7 +42,7 @@ public class PlayerSystem extends EntitySystem{
 		if(sComp.get() == PlayerComponent.STATE_GRAB) {
 			PhysicsManager.getInstance().destroyJoint(joint);
 			joint = null;
-			mComp.velocity.set(axis1 * PlayerComponent.MOVE_VELOCITY,
+			mComp.velocity.set(-axis1 * PlayerComponent.MOVE_VELOCITY,
 							   axis2 * PlayerComponent.MOVE_VELOCITY);
 			this.body.applyForceToCenter(mComp.velocity.cpy(), true);
 		}
@@ -76,6 +75,10 @@ public class PlayerSystem extends EntitySystem{
 			jointDef.initialize(this.body, grabbed, this.body.getWorldCenter().cpy(), this.grabbedPos);
 			joint = (DistanceJoint) PhysicsManager.getInstance().createJoint(jointDef);
 		}
+		
+		TransformComponent tComp = player.getComponent(TransformComponent.class);
+		tComp.pos.set(body.getWorldCenter().scl(PhysicsManager.BOX_TO_WORLD));
+		tComp.rotation = body.getAngle();
 		//TODO Update state, transform, etc ...
 	}
 	

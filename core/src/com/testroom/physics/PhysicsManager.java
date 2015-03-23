@@ -3,6 +3,7 @@ package com.testroom.physics;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.EdgeShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.Joint;
@@ -32,7 +33,7 @@ public class PhysicsManager {
 	}
 
 	public PhysicsManager() {
-		world = new World(new Vector2(0, -ConfigManager.gravity), true);
+		world = new World(new Vector2(0, 0), true);
 		world.setContactListener(new PhysicsContactListener());
 
 		updateCount = 0;
@@ -69,6 +70,28 @@ public class PhysicsManager {
 
 		FixtureDef fixtureDef = new FixtureDef();
 		fixtureDef.shape = box;
+
+		fixtureDef.density = 1.0f;
+		fixtureDef.friction = 0.0f;
+
+		b.createFixture(fixtureDef);
+		b.setUserData(s);
+		return b;
+	}
+	
+	public Body createDynamicCircle(Vector2 pos, float size,
+			PhysicsDataStructure s) {
+		BodyDef bodyDef = new BodyDef();
+		bodyDef.position.set(WORLD_TO_BOX * pos.x, WORLD_TO_BOX * pos.y);
+		bodyDef.type = BodyType.DynamicBody;
+		bodyDef.fixedRotation = false;
+		Body b = world.createBody(bodyDef);
+
+		CircleShape circle = new CircleShape();
+		circle.setRadius(size);
+
+		FixtureDef fixtureDef = new FixtureDef();
+		fixtureDef.shape = circle;
 
 		fixtureDef.density = 1.0f;
 		fixtureDef.friction = 0.0f;
