@@ -42,10 +42,14 @@ public class PlayerSystem extends EntitySystem{
 		if(sComp.get() == PlayerComponent.STATE_GRAB) {
 			PhysicsManager.getInstance().destroyJoint(joint);
 			joint = null;
-			mComp.velocity.set(-axis1 * PlayerComponent.MOVE_VELOCITY,
-							   axis2 * PlayerComponent.MOVE_VELOCITY);
+			
+			mComp.velocity.set(axis2 * PlayerComponent.MOVE_VELOCITY,
+					   -axis1 * PlayerComponent.MOVE_VELOCITY);
+			mComp.velocity.scl(body.getMass());
 			this.body.applyForceToCenter(mComp.velocity.cpy(), true);
 		}
+		
+
 		
 		sComp.set(PlayerComponent.STATE_JUMP);
 	}
