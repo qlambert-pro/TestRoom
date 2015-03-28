@@ -38,6 +38,8 @@ public class PlayerSystem extends EntitySystem{
 		mComp.velocity.scl(body.getMass());
 		body.setLinearVelocity(mComp.velocity);
 		body.setAngularDamping(0);
+		//body.setLinearDamping(0);
+		tComp.body = body;
 	}
 
 	public void jump(float axis1, float axis2) {
@@ -94,11 +96,6 @@ public class PlayerSystem extends EntitySystem{
 			joint = (WeldJoint) PhysicsManager.getInstance().createJoint(jointDef);
 			
 		}
-		
-		TransformComponent tComp = player.getComponent(TransformComponent.class);
-		tComp.pos.set(body.getWorldCenter().scl(PhysicsManager.BOX_TO_WORLD));
-		tComp.rotation = body.getAngle();
-		//TODO Update state, transform, etc ...
 	}
 	
 	
