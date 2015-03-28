@@ -57,28 +57,6 @@ public class PhysicsManager {
 			world.destroyBody(b);
 	}
 
-	public Body createDynamicRectangle(Vector2 pos, Vector2 size,
-			PhysicsDataStructure s) {
-		BodyDef bodyDef = new BodyDef();
-		bodyDef.position.set(WORLD_TO_BOX * pos.x, WORLD_TO_BOX * pos.y);
-		bodyDef.type = BodyType.DynamicBody;
-		bodyDef.fixedRotation = true;
-		Body b = world.createBody(bodyDef);
-
-		PolygonShape box = new PolygonShape();
-		box.setAsBox(WORLD_TO_BOX * size.x / 2, WORLD_TO_BOX * size.y / 2);
-
-		FixtureDef fixtureDef = new FixtureDef();
-		fixtureDef.shape = box;
-
-		fixtureDef.density = 1.0f;
-		fixtureDef.friction = 0.0f;
-
-		b.createFixture(fixtureDef);
-		b.setUserData(s);
-		return b;
-	}
-	
 	public Body createDynamicCircle(Vector2 pos, float size,
 			PhysicsDataStructure s) {
 		BodyDef bodyDef = new BodyDef();
@@ -95,6 +73,7 @@ public class PhysicsManager {
 
 		fixtureDef.density = 1.0f;
 		fixtureDef.friction = 0.0f;
+		fixtureDef.restitution = 0.5f;
 
 		b.createFixture(fixtureDef);
 		b.setUserData(s);
@@ -114,32 +93,14 @@ public class PhysicsManager {
 		FixtureDef fixtureDef = new FixtureDef();
 		fixtureDef.shape = edge;
 		fixtureDef.friction = 0;
-		fixtureDef.density = 0;
-		fixtureDef.restitution = 0.0f;
+		fixtureDef.density = 0;		
+		fixtureDef.restitution = 0.5f;
 
 		b.createFixture(fixtureDef);
 		b.setUserData(s);
 		return b;
 	}
 
-	public Body createTrigger(Vector2 pos, Vector2 size,
-			PhysicsDataStructure pds) {
-		BodyDef bodyDef = new BodyDef();
-		bodyDef.position.set(pos.x, pos.y);
-		Body b = world.createBody(bodyDef);
-		
-		PolygonShape box = new PolygonShape();
-		box.setAsBox(size.x/2, size.y/2);
-
-		FixtureDef fixtureDef = new FixtureDef();
-		fixtureDef.shape = box;
-		fixtureDef.isSensor = true;
-		
-		b.createFixture(fixtureDef);	    
-		b.setUserData(pds);
-		return b;
-	}
-	
 	public Joint createJoint(JointDef jointDef) {
 		return world.createJoint(jointDef);		
 	}

@@ -38,7 +38,7 @@ public class PlayerSystem extends EntitySystem{
 		mComp.velocity.scl(body.getMass());
 		body.setLinearVelocity(mComp.velocity);
 		body.setAngularDamping(0);
-		//body.setLinearDamping(0);
+		
 		tComp.body = body;
 	}
 
