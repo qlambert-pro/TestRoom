@@ -7,14 +7,12 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.joints.WeldJoint;
 import com.badlogic.gdx.physics.box2d.joints.WeldJointDef;
-import com.testroom.character.PhysicsCharacter;
 import com.testroom.components.MovementComponent;
 import com.testroom.components.PlayerComponent;
 import com.testroom.components.StateComponent;
 import com.testroom.components.TransformComponent;
-import com.testroom.physics.PhysicsDataStructure;
 import com.testroom.physics.PhysicsManager;
-import com.testroom.physics.PhysicsObjectType;
+
 
 public class PlayerSystem extends EntitySystem{
 	private Entity player;
@@ -25,9 +23,6 @@ public class PlayerSystem extends EntitySystem{
 	
 	public PlayerSystem(Entity entity) {
 		player = entity;
-		
-		TransformComponent tComp = entity.getComponent(TransformComponent.class);
-		MovementComponent mComp = entity.getComponent(MovementComponent.class);
 	}
 
 	public void jump(float axis1, float axis2) {
