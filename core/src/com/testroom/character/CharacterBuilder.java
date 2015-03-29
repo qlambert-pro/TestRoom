@@ -12,6 +12,9 @@ import com.testroom.components.StateComponent;
 import com.testroom.components.TextureComponent;
 import com.testroom.components.TransformComponent;
 import com.testroom.controls.PlayerControls;
+import com.testroom.physics.PhysicsDataStructure;
+import com.testroom.physics.PhysicsManager;
+import com.testroom.physics.PhysicsObjectType;
 import com.testroom.rendering.GraphicsAsset;
 import com.testroom.systems.PlayerSystem;
  
@@ -54,6 +57,15 @@ public class CharacterBuilder extends Component {
 		PlayerSystem e = new PlayerSystem(entity);
 		c.addListener(new PlayerControls(e));
 		engine.addSystem(e);
+		
+		PhysicsDataStructure s = new PhysicsDataStructure(new PhysicsCharacter(e),
+														  PhysicsObjectType.PLAYER);
+		position.body = PhysicsManager.getInstance().createDynamicCircle(
+				position.pos.cpy(), PlayerComponent.WIDTH/2, s);
+		
+		movement.velocity.scl(position.body.getMass());
+		position.body.setLinearVelocity(movement.velocity);
+		position.body.setAngularDamping(0);				
 		
 		return entity;
 	}

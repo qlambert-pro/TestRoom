@@ -18,7 +18,6 @@ import com.testroom.physics.PhysicsObjectType;
 
 public class PlayerSystem extends EntitySystem{
 	private Entity player;
-	private Body body;
 	
 	private WeldJoint joint = null;
 	private Body grabbed = null;
@@ -29,22 +28,13 @@ public class PlayerSystem extends EntitySystem{
 		
 		TransformComponent tComp = entity.getComponent(TransformComponent.class);
 		MovementComponent mComp = entity.getComponent(MovementComponent.class);
-		
-		PhysicsDataStructure s = new PhysicsDataStructure(new PhysicsCharacter(this),
-				PhysicsObjectType.PLAYER);
-		this.body = PhysicsManager.getInstance().createDynamicCircle(
-				tComp.pos.cpy(), PlayerComponent.WIDTH/2, s);
-		
-		mComp.velocity.scl(body.getMass());
-		body.setLinearVelocity(mComp.velocity);
-		body.setAngularDamping(0);
-		
-		tComp.body = body;
 	}
 
 	public void jump(float axis1, float axis2) {
 		StateComponent sComp = player.getComponent(StateComponent.class);
 		MovementComponent mComp = player.getComponent(MovementComponent.class);
+		Body body = player.getComponent(TransformComponent.class).body;
+		
 		if(sComp.get() == PlayerComponent.STATE_GRAB) {
 			PhysicsManager.getInstance().destroyJoint(joint);
 			joint = null;
@@ -56,7 +46,7 @@ public class PlayerSystem extends EntitySystem{
 			body.setAngularVelocity(0);
 			float angle = MathUtils.atan2(mComp.velocity.y, mComp.velocity.x) - MathUtils.atan2(1, 0);
 			body.setTransform(body.getWorldCenter(), angle);
-			this.body.applyForceToCenter(mComp.velocity.cpy(), true);
+			body.applyForceToCenter(mComp.velocity.cpy(), true);
 		}
 		
 
@@ -84,6 +74,8 @@ public class PlayerSystem extends EntitySystem{
 		super.update(dt);
 		
 		StateComponent sComp = player.getComponent(StateComponent.class);
+		Body body = player.getComponent(TransformComponent.class).body;
+		
 		if(sComp.get() == PlayerComponent.STATE_GRAB && joint == null) {
 			body.setAngularVelocity(0);
 			float angle = MathUtils.atan2(body.getWorldCenter().y - grabbedPos.y,
@@ -92,7 +84,7 @@ public class PlayerSystem extends EntitySystem{
 			body.setTransform(body.getWorldCenter(), angle);
 
 			WeldJointDef jointDef = new WeldJointDef();
-			jointDef.initialize(this.body, grabbed,this.grabbedPos);
+			jointDef.initialize(body, grabbed,this.grabbedPos);
 			joint = (WeldJoint) PhysicsManager.getInstance().createJoint(jointDef);
 			
 		}
