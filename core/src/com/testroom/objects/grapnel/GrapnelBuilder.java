@@ -3,12 +3,17 @@ package com.testroom.objects.grapnel;
 import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.math.Vector2;
+import com.testroom.character.PhysicsCharacter;
 import com.testroom.components.AnimationComponent;
 import com.testroom.components.GrapnelComponent;
 import com.testroom.components.MovementComponent;
+import com.testroom.components.PlayerComponent;
 import com.testroom.components.StateComponent;
 import com.testroom.components.TextureComponent;
 import com.testroom.components.TransformComponent;
+import com.testroom.physics.PhysicsDataStructure;
+import com.testroom.physics.PhysicsManager;
+import com.testroom.physics.PhysicsObjectType;
 import com.testroom.rendering.GraphicsAsset;
 import com.testroom.systems.GrapnelSystem;
 
@@ -45,8 +50,19 @@ public class GrapnelBuilder {
 		entity.add(texture);
 		
 		engine.addEntity(entity);
+		
+		GrapnelSystem grapnelSystem = engine.getSystem(GrapnelSystem.class);
 				
-		engine.getSystem(GrapnelSystem.class).setProcessing(true);
+		grapnelSystem.setProcessing(true);
+		
+		PhysicsDataStructure s = new PhysicsDataStructure(new PhysicsGrapnel(entity, grapnelSystem),
+				  										  PhysicsObjectType.GRAPNEL);
+		position.body = PhysicsManager.getInstance().createDynamicCircle(
+		position.pos.cpy(), PlayerComponent.WIDTH/2, s);
+
+		movement.velocity.scl(position.body.getMass());
+		position.body.setLinearVelocity(movement.velocity);
+		position.body.setAngularDamping(0);		
 		
 		return entity;
 	}

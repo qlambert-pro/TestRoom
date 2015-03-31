@@ -14,11 +14,7 @@ public class PhysicsCharacter implements PhysicsObject {
 	}
 
 	@Override
-	public void BeginContactHandler(PhysicsDataStructure struct, Contact contact) {
-		//TODO beurk !!!
-		if(!(struct.obj instanceof Edge))
-			return;
-		
+	public void BeginContactHandler(PhysicsDataStructure struct, Contact contact) {		
 		system.grab(((Edge) struct.obj).getBody(),
 				contact.getWorldManifold().getPoints()[0]);
 	}
