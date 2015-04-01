@@ -107,4 +107,8 @@ public class PhysicsManager {
 	public void destroyJoint(Joint joint) {
 		world.destroyJoint(joint);
 	}
+	
+	public void destroyBody(Body body) {
+		world.destroyBody(body);
+	}
 }

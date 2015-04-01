@@ -18,7 +18,7 @@ public class PhysicsGrapnel implements PhysicsObject {
 	}
 
 	@Override
-	public void BeginContactHandler(PhysicsDataStructure struct, Contact contact) {
+	public void BeginContactHandler(PhysicsDataStructure struct, Contact contact) {			
 		if(!(struct.type == PhysicsObjectType.GRAPNEL))
 			return;
 
@@ -38,6 +38,14 @@ public class PhysicsGrapnel implements PhysicsObject {
 	public void PreContactHandler(PhysicsDataStructure b, Contact contact) {
 		// TODO Auto-generated method stub
 
+	}
+	
+	public Entity getGrapnel(){
+		return grapnel;
+	}
+
+	public void destroyGrapnel() {
+		system.destroy(grapnel);		
 	}
 
 }

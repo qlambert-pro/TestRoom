@@ -1,6 +1,5 @@
 package com.testroom.character;
 
-import com.badlogic.ashley.core.Component;
 import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.controllers.Controller;
@@ -12,13 +11,14 @@ import com.testroom.components.StateComponent;
 import com.testroom.components.TextureComponent;
 import com.testroom.components.TransformComponent;
 import com.testroom.controls.PlayerControls;
+import com.testroom.objects.grapnel.GrapnelBuilder;
 import com.testroom.physics.PhysicsDataStructure;
 import com.testroom.physics.PhysicsManager;
 import com.testroom.physics.PhysicsObjectType;
 import com.testroom.rendering.GraphicsAsset;
 import com.testroom.systems.PlayerSystem;
  
-public class CharacterBuilder extends Component {
+public class CharacterBuilder {
 	private Engine engine;
 
 	public CharacterBuilder(Engine engine) {
@@ -54,7 +54,9 @@ public class CharacterBuilder extends Component {
 		
 		engine.addEntity(entity);
 		
-		PlayerSystem e = new PlayerSystem(entity);
+		GrapnelBuilder grapnelBuilder = new GrapnelBuilder(engine);
+		
+		PlayerSystem e = new PlayerSystem(entity, grapnelBuilder);
 		c.addListener(new PlayerControls(e));
 		engine.addSystem(e);
 		

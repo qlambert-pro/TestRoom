@@ -1,7 +1,9 @@
 package com.testroom.systems;
 
+import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
-import com.badlogic.ashley.core.EntitySystem;
+import com.badlogic.ashley.core.Family;
+import com.badlogic.ashley.systems.IteratingSystem;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -13,13 +15,22 @@ import com.testroom.components.StateComponent;
 import com.testroom.components.TransformComponent;
 import com.testroom.physics.PhysicsManager;
 
-public class GrapnelSystem extends EntitySystem {	
+public class GrapnelSystem extends IteratingSystem {
+	Engine engine;
+	
 	private Array<WeldJointDef> jointsDef = null;
 	private Array<WeldJoint> joints = null;
+
+	private Array<Entity> destroyedQueue = null;
 	
-	public GrapnelSystem() {		
+	public GrapnelSystem(Engine engine) {
+		super(Family.getFor(GrapnelComponent.class));		
+		
 		jointsDef = new Array<WeldJointDef>();
 		joints = new Array<WeldJoint>();
+		destroyedQueue = new Array<Entity>();
+		
+		this.engine = engine;
 	}
 	
 	
@@ -31,6 +42,13 @@ public class GrapnelSystem extends EntitySystem {
 			joints.add((WeldJoint) PhysicsManager.getInstance().createJoint(jointDef));	
 		
 		jointsDef.clear();
+		
+		for (Entity e : destroyedQueue) {			
+			PhysicsManager.getInstance().destroyBody(e.getComponent(TransformComponent.class).body);
+			engine.removeEntity(e);
+		}
+		
+		destroyedQueue.clear();
 	}
 	
 	public void grab(Entity grapnel, Body grabbed, Vector2 grabbedPos) {
@@ -63,6 +81,21 @@ public class GrapnelSystem extends EntitySystem {
 				break;
 			}				
 		}
+	}
+
+
+	public void destroy(Entity grapnel) {
+		destroyedQueue.add(grapnel);		
+	}
+
+
+	@Override
+	protected void processEntity(Entity entity, float deltaTime) {
+		GrapnelComponent gc = entity.getComponent(GrapnelComponent.class);
+		StateComponent sc = entity.getComponent(StateComponent.class);
+		
+		if (sc.get() == GrapnelComponent.STATE_RECALL)
+			gc.distance = gc.distance - GrapnelComponent.MOVE_VELOCITY * deltaTime;
 	}
 
 }

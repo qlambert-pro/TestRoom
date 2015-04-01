@@ -1,9 +1,12 @@
 package com.testroom.character;
 
+import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.physics.box2d.Contact;
 import com.testroom.map.Edge;
+import com.testroom.objects.grapnel.PhysicsGrapnel;
 import com.testroom.physics.PhysicsDataStructure;
 import com.testroom.physics.PhysicsObject;
+import com.testroom.physics.PhysicsObjectType;
 import com.testroom.systems.PlayerSystem;
 
 public class PhysicsCharacter implements PhysicsObject {
@@ -14,9 +17,20 @@ public class PhysicsCharacter implements PhysicsObject {
 	}
 
 	@Override
-	public void BeginContactHandler(PhysicsDataStructure struct, Contact contact) {		
-		system.grab(((Edge) struct.obj).getBody(),
-				contact.getWorldManifold().getPoints()[0]);
+	public void BeginContactHandler(PhysicsDataStructure struct, Contact contact) {
+		if(struct.type == PhysicsObjectType.GRAPNEL) {
+			Entity grapnel = ((PhysicsGrapnel) struct.obj).getGrapnel();
+			if (system.isGrapnel(grapnel)) {
+				system.destroyGrapnel();
+				((PhysicsGrapnel) struct.obj).destroyGrapnel();
+			}
+			return;
+		} else if (struct.type == PhysicsObjectType.SOLID) {
+			system.grab(((Edge) struct.obj).getBody(),
+					contact.getWorldManifold().getPoints()[0]);	
+		}
+		
+		
 	}
 
 	@Override
@@ -29,6 +43,5 @@ public class PhysicsCharacter implements PhysicsObject {
 	public void PreContactHandler(PhysicsDataStructure b, Contact contact) {
 		// TODO Auto-generated method stub
 
-	}
-
+	}	
 }

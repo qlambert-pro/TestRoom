@@ -12,6 +12,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.testroom.physics.PhysicsManager;
 import com.testroom.systems.AnimationSystem;
 import com.testroom.systems.CameraSystem;
+import com.testroom.systems.GrapnelSystem;
 import com.testroom.systems.PhysicsSystem;
 import com.testroom.systems.RenderingSystem;
 import com.testroom.TestRoom;
@@ -50,6 +51,8 @@ public class GameMode extends ScreenAdapter{
 		
 		createCamera(e);
 
+		engine.addSystem(new GrapnelSystem(engine));
+		engine.getSystem(GrapnelSystem.class).setProcessing(false);
 		engine.addSystem(new PhysicsSystem());
 		engine.addSystem(new CameraSystem());
 		engine.addSystem(new AnimationSystem());
