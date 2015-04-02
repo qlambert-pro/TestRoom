@@ -3,7 +3,6 @@ package com.testroom.systems;
 import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
-import com.badlogic.ashley.systems.IteratingSystem;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -15,7 +14,7 @@ import com.testroom.components.StateComponent;
 import com.testroom.components.TransformComponent;
 import com.testroom.physics.PhysicsManager;
 
-public class GrapnelSystem extends IteratingSystem {
+public class GrapnelSystem extends DynamicallyIteratingSystem {
 	Engine engine;
 	
 	private Array<WeldJointDef> jointsDef = null;

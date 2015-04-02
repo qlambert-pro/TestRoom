@@ -2,7 +2,6 @@ package com.testroom.systems;
 
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
-import com.badlogic.ashley.systems.IteratingSystem;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
@@ -11,7 +10,7 @@ import com.testroom.components.TextureComponent;
 import com.testroom.components.TransformComponent;
 import com.testroom.map.Map;
 
-public class RenderingSystem extends IteratingSystem {
+public class RenderingSystem extends DynamicallyIteratingSystem {
 	
 	private SpriteBatch batch;
 	private Array<Entity> renderQueue;

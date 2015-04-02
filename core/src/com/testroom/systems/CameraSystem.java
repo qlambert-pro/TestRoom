@@ -3,11 +3,10 @@ package com.testroom.systems;
 import com.badlogic.ashley.core.ComponentMapper;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
-import com.badlogic.ashley.systems.IteratingSystem;
 import com.testroom.components.CameraComponent;
 import com.testroom.components.TransformComponent;
 
-public class CameraSystem extends IteratingSystem {
+public class CameraSystem extends DynamicallyIteratingSystem {
 	private ComponentMapper<TransformComponent> tm;
 	private ComponentMapper<CameraComponent> cm;
 	

@@ -19,13 +19,13 @@ public class PhysicsGrapnel implements PhysicsObject {
 
 	@Override
 	public void BeginContactHandler(PhysicsDataStructure struct, Contact contact) {			
-		if(!(struct.type == PhysicsObjectType.GRAPNEL))
+		if(struct.type == PhysicsObjectType.GRAPNEL)
 			return;
-
-		system.grab(
-				grapnel,
-				((Edge) struct.obj).getBody(),
-				contact.getWorldManifold().getPoints()[0]);
+		else if (struct.type == PhysicsObjectType.SOLID)
+			system.grab(
+					grapnel,
+					((Edge) struct.obj).getBody(),
+					contact.getWorldManifold().getPoints()[0]);
 	}
 
 	@Override

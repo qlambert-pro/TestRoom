@@ -2,6 +2,8 @@ package com.testroom.character;
 
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.physics.box2d.Contact;
+import com.testroom.components.GrapnelComponent;
+import com.testroom.components.StateComponent;
 import com.testroom.map.Edge;
 import com.testroom.objects.grapnel.PhysicsGrapnel;
 import com.testroom.physics.PhysicsDataStructure;
@@ -20,7 +22,8 @@ public class PhysicsCharacter implements PhysicsObject {
 	public void BeginContactHandler(PhysicsDataStructure struct, Contact contact) {
 		if(struct.type == PhysicsObjectType.GRAPNEL) {
 			Entity grapnel = ((PhysicsGrapnel) struct.obj).getGrapnel();
-			if (system.isGrapnel(grapnel)) {
+			StateComponent sComp = grapnel.getComponent(StateComponent.class);
+			if (system.isGrapnel(grapnel) && sComp.get() == GrapnelComponent.STATE_RECALL) {
 				system.destroyGrapnel();
 				((PhysicsGrapnel) struct.obj).destroyGrapnel();
 			}

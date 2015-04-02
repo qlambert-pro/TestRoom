@@ -3,6 +3,7 @@ package com.testroom.mode;
 
 import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
+import com.badlogic.ashley.core.Family;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.controllers.Controller;
@@ -18,6 +19,8 @@ import com.testroom.systems.RenderingSystem;
 import com.testroom.TestRoom;
 import com.testroom.character.CharacterBuilder;
 import com.testroom.components.CameraComponent;
+import com.testroom.components.TextureComponent;
+import com.testroom.components.TransformComponent;
 import com.testroom.configuration.ConfigManager;
 import com.testroom.map.Map;
 import com.testroom.map.MapLoader;
@@ -73,7 +76,6 @@ public class GameMode extends ScreenAdapter{
 		Gdx.gl.glClearColor(1f, 1f, 1f, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		
-
 		PhysicsManager.getInstance().update(dt);		
 		engine.update(dt);
 	}
