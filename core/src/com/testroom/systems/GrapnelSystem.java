@@ -37,8 +37,10 @@ public class GrapnelSystem extends DynamicallyIteratingSystem {
 	public void update(float dt) {
 		super.update(dt);
 		
-		for (WeldJointDef jointDef : jointsDef)		
-			joints.add((WeldJoint) PhysicsManager.getInstance().createJoint(jointDef));	
+		for (WeldJointDef jointDef : jointsDef)	{
+			joints.add((WeldJoint) PhysicsManager.getInstance().createJoint(jointDef));
+			jointDef.bodyA.setFixedRotation(true);
+		}
 		
 		jointsDef.clear();
 		
@@ -58,10 +60,6 @@ public class GrapnelSystem extends DynamicallyIteratingSystem {
 		if(sComp.get() == GrapnelComponent.STATE_THROW) {
 			sComp.set(GrapnelComponent.STATE_GRAB);
 			body.setAngularVelocity(0);
-			float angle = MathUtils.atan2(body.getWorldCenter().y - grabbedPos.y,
-										  body.getWorldCenter().x - grabbedPos.x) -
-										  MathUtils.atan2(1, 0);
-			body.setTransform(body.getWorldCenter(), angle);
 
 			WeldJointDef jointDef = new WeldJointDef();
 			jointDef.initialize(body, grabbed, grabbedPos);	
@@ -94,7 +92,7 @@ public class GrapnelSystem extends DynamicallyIteratingSystem {
 		StateComponent sc = entity.getComponent(StateComponent.class);
 		
 		if (sc.get() == GrapnelComponent.STATE_RECALL)
-			gc.distance = gc.distance - GrapnelComponent.MOVE_VELOCITY * deltaTime;
+			gc.distance = gc.distance - GrapnelComponent.RECALL_VELOCITY * deltaTime;
 	}
 
 }

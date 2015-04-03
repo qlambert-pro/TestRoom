@@ -19,7 +19,7 @@ public class PlayerControls extends ControllerAdapter {
 			system.jump(controller.getAxis(Xbox360Pad.AXIS_LEFT_X),
 					    controller.getAxis(Xbox360Pad.AXIS_LEFT_Y));
 			return true;
-		case Xbox360Pad.BUTTON_R3:
+		case Xbox360Pad.BUTTON_RB:
 			system.shootGrapnel(controller.getAxis(Xbox360Pad.AXIS_LEFT_X),
 					    		controller.getAxis(Xbox360Pad.AXIS_LEFT_Y));
 			return true;
@@ -34,7 +34,7 @@ public class PlayerControls extends ControllerAdapter {
 		case Xbox360Pad.BUTTON_A:
 			system.grabbing();
 			return true;
-		case Xbox360Pad.BUTTON_R3:
+		case Xbox360Pad.BUTTON_RB:
 			system.recallGrapnel();
 			return true;
 		}
