@@ -119,6 +119,8 @@ public class PlayerSystem extends EntitySystem{
 			return;
 		
 		TransformComponent tComp = player.getComponent(TransformComponent.class);
+		MovementComponent mComp = player.getComponent(MovementComponent.class);
+		
 		
 		grapnel = grapnelBuilder.build(tComp.pos.cpy());
 		
@@ -136,7 +138,7 @@ public class PlayerSystem extends EntitySystem{
 		mCompGrap.velocity.set(axis2 * PlayerComponent.MOVE_VELOCITY,
 				   -axis1 * PlayerComponent.MOVE_VELOCITY);
 		mCompGrap.velocity.scl(tCompGrap.body.getMass());
-		//mCompGrap.velocity.add(v);
+		mCompGrap.velocity.add(mComp.velocity);
 				
 		float angle = MathUtils.atan2(mCompGrap.velocity.y, mCompGrap.velocity.x) - MathUtils.atan2(1, 0);
 		tCompGrap.body.setTransform(tCompGrap.body.getWorldCenter(), angle);
