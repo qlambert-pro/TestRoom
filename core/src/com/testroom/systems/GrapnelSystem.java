@@ -93,6 +93,8 @@ public class GrapnelSystem extends DynamicallyIteratingSystem {
 		
 		if (sc.get() == GrapnelComponent.STATE_RECALL)
 			gc.distance = gc.distance - GrapnelComponent.RECALL_VELOCITY * deltaTime;
+			if (gc.distance < 0)
+				gc.distance = 0;
 	}
 
 }
