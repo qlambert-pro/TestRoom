@@ -70,8 +70,18 @@ public class GrapnelSystem extends DynamicallyIteratingSystem {
 			gc.jointDef = null;
 		}
 		
-		if (gc.isDestroyed) {
+		if (gc.isDestroyed) {			
+			if (gc.grapnelJoint != null) {
+				PhysicsManager.getInstance().destroyJoint(gc.grapnelJoint);
+				gc.grapnelJoint = null;
+			}
+			
+			if (gc.joint != null) {
+				PhysicsManager.getInstance().destroyJoint(gc.joint);
+				gc.joint = null;
+			}
 			PhysicsManager.getInstance().destroyBody(entity.getComponent(TransformComponent.class).body);
+			
 			engine.removeEntity(entity);
 		}
 	}
