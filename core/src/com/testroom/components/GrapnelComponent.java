@@ -1,6 +1,7 @@
 package com.testroom.components;
 
 import com.badlogic.ashley.core.Component;
+import com.badlogic.gdx.physics.box2d.joints.RopeJoint;
 
 public class GrapnelComponent extends Component {
 	public static final int STATE_THROW = 0;
@@ -12,5 +13,6 @@ public class GrapnelComponent extends Component {
 	public static final float WIDTH = 0.4f;
 	
 	public static final float MAX_DISTANCE = 5f;
-	public float distance = MAX_DISTANCE;
+	
+	public RopeJoint grapnelJoint = null;
 }

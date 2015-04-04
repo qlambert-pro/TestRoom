@@ -90,10 +90,12 @@ public class GrapnelSystem extends DynamicallyIteratingSystem {
 		GrapnelComponent gc = entity.getComponent(GrapnelComponent.class);
 		StateComponent sc = entity.getComponent(StateComponent.class);
 		
-		if (sc.get() == GrapnelComponent.STATE_RECALL)
-			gc.distance = gc.distance - GrapnelComponent.RECALL_VELOCITY * deltaTime;
-			if (gc.distance < 0)
-				gc.distance = 0;
+		if (sc.get() == GrapnelComponent.STATE_RECALL) {
+			float length = gc.grapnelJoint.getMaxLength() - GrapnelComponent.RECALL_VELOCITY * deltaTime;
+			if (length < 0)
+				length = 0;
+			gc.grapnelJoint.setMaxLength(length);
+		}
 	}
 
 }

@@ -3,6 +3,9 @@ package com.testroom.objects.grapnel;
 import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.joints.RopeJoint;
+import com.badlogic.gdx.physics.box2d.joints.RopeJointDef;
 import com.testroom.components.AnimationComponent;
 import com.testroom.components.GrapnelComponent;
 import com.testroom.components.MovementComponent;
@@ -22,7 +25,7 @@ public class GrapnelBuilder {
 		this.engine = engine;
 	}
 	
-	public Entity build(Vector2 p) {
+	public Entity build(Body anchorPlayer, Vector2 p) {
 		Entity entity = new Entity();
 
 		AnimationComponent animation = new AnimationComponent();
@@ -60,7 +63,15 @@ public class GrapnelBuilder {
 		position.pos.cpy(), GrapnelComponent.WIDTH/2, s);
 
 		movement.velocity.scl(position.body.getMass());		
-		position.body.setAngularDamping(0);		
+		position.body.setAngularDamping(0);
+		
+		RopeJointDef jointDef = new RopeJointDef();
+		jointDef.bodyA = position.body;
+		jointDef.bodyB = anchorPlayer;
+		jointDef.collideConnected = true;
+		jointDef.maxLength = GrapnelComponent.MAX_DISTANCE;
+		
+		grapnel.grapnelJoint = (RopeJoint) PhysicsManager.getInstance().createJoint(jointDef);
 		
 		return entity;
 	}

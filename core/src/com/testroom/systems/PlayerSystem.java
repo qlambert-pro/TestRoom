@@ -5,8 +5,6 @@ import com.badlogic.ashley.core.EntitySystem;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
-import com.badlogic.gdx.physics.box2d.joints.RopeJoint;
-import com.badlogic.gdx.physics.box2d.joints.RopeJointDef;
 import com.badlogic.gdx.physics.box2d.joints.WeldJoint;
 import com.badlogic.gdx.physics.box2d.joints.WeldJointDef;
 import com.testroom.components.GrapnelComponent;
@@ -22,8 +20,6 @@ public class PlayerSystem extends EntitySystem{
 	private Entity player;
 	
 	private GrapnelBuilder grapnelBuilder;
-
-	private RopeJoint grapnelJoint = null;
 	
 	public PlayerSystem(Entity entity, GrapnelBuilder g) {
 		player = entity;
@@ -93,27 +89,7 @@ public class PlayerSystem extends EntitySystem{
 			pComp.joint = (WeldJoint) PhysicsManager.getInstance().createJoint(jointDef);
 			
 		}
-		
-		if (pComp.grapnel == null)
-			return;
-		
-		GrapnelComponent gComp = pComp.grapnel.getComponent(GrapnelComponent.class);
-		float length = gComp.distance;
-		
-		grapnelJoint.setMaxLength(length);
-		
-		TransformComponent tComp = player.getComponent(TransformComponent.class);
-		TransformComponent tCompGrap = pComp.grapnel.getComponent(TransformComponent.class);
-		StateComponent sCompGrap = pComp.grapnel.getComponent(StateComponent.class);
-		
-		float distance = tComp.body.getWorldCenter().dst(tCompGrap.body.getWorldCenter());
-		
-		if ((sCompGrap.get() == GrapnelComponent.STATE_THROW ||
-			 sCompGrap.get() == GrapnelComponent.STATE_GRAB) &&
-			distance >= length){
-			recallGrapnel();			
-		}
-	}
+}
 	
 	public void shootGrapnel (float axis1, float axis2) {
 		PlayerComponent pComp = player.getComponent(PlayerComponent.class);
@@ -125,18 +101,10 @@ public class PlayerSystem extends EntitySystem{
 		MovementComponent mComp = player.getComponent(MovementComponent.class);
 		
 		
-		pComp.grapnel = grapnelBuilder.build(tComp.pos.cpy());
+		pComp.grapnel = grapnelBuilder.build(tComp.body, tComp.pos.cpy());
 		
 		TransformComponent tCompGrap = pComp.grapnel.getComponent(TransformComponent.class);
 		MovementComponent mCompGrap = pComp.grapnel.getComponent(MovementComponent.class);
-		
-		RopeJointDef jointDef = new RopeJointDef();
-		jointDef.bodyA = tCompGrap.body;
-		jointDef.bodyB = tComp.body;
-		jointDef.collideConnected = true;
-		jointDef.maxLength = GrapnelComponent.MAX_DISTANCE;
-		
-		grapnelJoint = (RopeJoint) PhysicsManager.getInstance().createJoint(jointDef);
 		
 		mCompGrap.velocity.set(axis2 * PlayerComponent.MOVE_VELOCITY,
 				   -axis1 * PlayerComponent.MOVE_VELOCITY);
