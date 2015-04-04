@@ -22,7 +22,7 @@ public class PlayerSystem extends EntitySystem{
 	private Entity player;
 	
 	private GrapnelBuilder grapnelBuilder;
-	private Entity grapnel = null;
+
 	private RopeJoint grapnelJoint = null;
 	
 	public PlayerSystem(Entity entity, GrapnelBuilder g) {
@@ -94,17 +94,17 @@ public class PlayerSystem extends EntitySystem{
 			
 		}
 		
-		if (grapnel == null)
+		if (pComp.grapnel == null)
 			return;
 		
-		GrapnelComponent gComp = grapnel.getComponent(GrapnelComponent.class);
+		GrapnelComponent gComp = pComp.grapnel.getComponent(GrapnelComponent.class);
 		float length = gComp.distance;
 		
 		grapnelJoint.setMaxLength(length);
 		
 		TransformComponent tComp = player.getComponent(TransformComponent.class);
-		TransformComponent tCompGrap = grapnel.getComponent(TransformComponent.class);
-		StateComponent sCompGrap = grapnel.getComponent(StateComponent.class);
+		TransformComponent tCompGrap = pComp.grapnel.getComponent(TransformComponent.class);
+		StateComponent sCompGrap = pComp.grapnel.getComponent(StateComponent.class);
 		
 		float distance = tComp.body.getWorldCenter().dst(tCompGrap.body.getWorldCenter());
 		
@@ -116,17 +116,19 @@ public class PlayerSystem extends EntitySystem{
 	}
 	
 	public void shootGrapnel (float axis1, float axis2) {
-		if (grapnel != null)
+		PlayerComponent pComp = player.getComponent(PlayerComponent.class);
+		
+		if (pComp.grapnel != null)
 			return;
 		
 		TransformComponent tComp = player.getComponent(TransformComponent.class);
 		MovementComponent mComp = player.getComponent(MovementComponent.class);
 		
 		
-		grapnel = grapnelBuilder.build(tComp.pos.cpy());
+		pComp.grapnel = grapnelBuilder.build(tComp.pos.cpy());
 		
-		TransformComponent tCompGrap = grapnel.getComponent(TransformComponent.class);
-		MovementComponent mCompGrap = grapnel.getComponent(MovementComponent.class);
+		TransformComponent tCompGrap = pComp.grapnel.getComponent(TransformComponent.class);
+		MovementComponent mCompGrap = pComp.grapnel.getComponent(MovementComponent.class);
 		
 		RopeJointDef jointDef = new RopeJointDef();
 		jointDef.bodyA = tCompGrap.body;
@@ -149,10 +151,12 @@ public class PlayerSystem extends EntitySystem{
 	}
 	
 	public void recallGrapnel () {
-		if (grapnel == null)
+		PlayerComponent pComp = player.getComponent(PlayerComponent.class);
+		
+		if (pComp.grapnel == null)
 			return;
 		
-		StateComponent gComp = grapnel.getComponent(StateComponent.class);
+		StateComponent gComp = pComp.grapnel.getComponent(StateComponent.class);
 		gComp.set(GrapnelComponent.STATE_RECALL);
 	}
 	
@@ -162,11 +166,15 @@ public class PlayerSystem extends EntitySystem{
 		//destroy joints and all		
 	}
 
-	public boolean isGrapnel(Entity grapnel) { 
-		return grapnel == this.grapnel;
+	public boolean isGrapnel(Entity grapnel) {
+		PlayerComponent pComp = player.getComponent(PlayerComponent.class);
+		
+		return grapnel == pComp.grapnel;
 	}
 
 	public void destroyGrapnel() {
-		grapnel = null;		
+		PlayerComponent pComp = player.getComponent(PlayerComponent.class);
+		
+		pComp.grapnel = null;		
 	}
 }

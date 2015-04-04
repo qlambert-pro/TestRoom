@@ -1,6 +1,7 @@
 package com.testroom.components;
 
 import com.badlogic.ashley.core.Component;
+import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.joints.WeldJoint;
@@ -18,4 +19,6 @@ public class PlayerComponent extends Component {
 	public WeldJoint joint = null;
 	public Body grabbed = null;
 	public Vector2 grabbedPos = null;
+	
+	public Entity grapnel = null;
 }
