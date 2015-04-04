@@ -2,6 +2,8 @@ package com.testroom.components;
 
 import com.badlogic.ashley.core.Component;
 import com.badlogic.gdx.physics.box2d.joints.RopeJoint;
+import com.badlogic.gdx.physics.box2d.joints.WeldJoint;
+import com.badlogic.gdx.physics.box2d.joints.WeldJointDef;
 
 public class GrapnelComponent extends Component {
 	public static final int STATE_THROW = 0;
@@ -15,4 +17,9 @@ public class GrapnelComponent extends Component {
 	public static final float MAX_DISTANCE = 5f;
 	
 	public RopeJoint grapnelJoint = null;
+	
+	public WeldJointDef jointDef = null;
+	public WeldJoint joint = null;
+	
+	public boolean isDestroyed = false;
 }
