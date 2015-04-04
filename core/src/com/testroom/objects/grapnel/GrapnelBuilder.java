@@ -3,11 +3,9 @@ package com.testroom.objects.grapnel;
 import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.math.Vector2;
-import com.testroom.character.PhysicsCharacter;
 import com.testroom.components.AnimationComponent;
 import com.testroom.components.GrapnelComponent;
 import com.testroom.components.MovementComponent;
-import com.testroom.components.PlayerComponent;
 import com.testroom.components.StateComponent;
 import com.testroom.components.TextureComponent;
 import com.testroom.components.TransformComponent;
@@ -41,6 +39,7 @@ public class GrapnelBuilder {
 		state.set(GrapnelComponent.STATE_THROW);
 		
 		position.pos.set(p);
+		position.scale.set(0.5f,0.5f);
 		
 		entity.add(animation);
 		entity.add(grapnel);

@@ -21,10 +21,6 @@ import com.testroom.physics.PhysicsManager;
 public class PlayerSystem extends EntitySystem{
 	private Entity player;
 	
-	private WeldJoint joint = null;
-	private Body grabbed = null;
-	private Vector2 grabbedPos = null;
-	
 	private GrapnelBuilder grapnelBuilder;
 	private Entity grapnel = null;
 	private RopeJoint grapnelJoint = null;
@@ -37,11 +33,13 @@ public class PlayerSystem extends EntitySystem{
 	public void jump(float axis1, float axis2) {
 		StateComponent sComp = player.getComponent(StateComponent.class);
 		MovementComponent mComp = player.getComponent(MovementComponent.class);
+		PlayerComponent pComp = player.getComponent(PlayerComponent.class);
+		
 		Body body = player.getComponent(TransformComponent.class).body;
 		
 		if(sComp.get() == PlayerComponent.STATE_GRAB) {
-			PhysicsManager.getInstance().destroyJoint(joint);
-			joint = null;
+			PhysicsManager.getInstance().destroyJoint(pComp.joint);
+			pComp.joint = null;
 						
 			mComp.velocity.set(axis2 * PlayerComponent.MOVE_VELOCITY,
 					   -axis1 * PlayerComponent.MOVE_VELOCITY);
@@ -65,11 +63,12 @@ public class PlayerSystem extends EntitySystem{
 
 	public void grab(Body grabbed, Vector2 pos) { 
 		StateComponent sComp = player.getComponent(StateComponent.class);
+		PlayerComponent pComp = player.getComponent(PlayerComponent.class);
 		
 		if(sComp.get() == PlayerComponent.STATE_GRABBING) {
 			sComp.set(PlayerComponent.STATE_GRAB);
-			this.grabbed  = grabbed;
-			this.grabbedPos = pos;
+			pComp.grabbed  = grabbed;
+			pComp.grabbedPos = pos;
 		}
 	}
 	
@@ -78,18 +77,20 @@ public class PlayerSystem extends EntitySystem{
 		super.update(dt);
 		
 		StateComponent sComp = player.getComponent(StateComponent.class);
+		PlayerComponent pComp = player.getComponent(PlayerComponent.class);
+		
 		Body body = player.getComponent(TransformComponent.class).body;
 		
-		if(sComp.get() == PlayerComponent.STATE_GRAB && joint == null) {
+		if(sComp.get() == PlayerComponent.STATE_GRAB && pComp.joint == null) {
 			body.setAngularVelocity(0);
-			float angle = MathUtils.atan2(body.getWorldCenter().y - grabbedPos.y,
-										  body.getWorldCenter().x - grabbedPos.x) -
+			float angle = MathUtils.atan2(body.getWorldCenter().y - pComp.grabbedPos.y,
+										  body.getWorldCenter().x - pComp.grabbedPos.x) -
 										  MathUtils.atan2(1, 0);
 			body.setTransform(body.getWorldCenter(), angle);
 
 			WeldJointDef jointDef = new WeldJointDef();
-			jointDef.initialize(body, grabbed,this.grabbedPos);
-			joint = (WeldJoint) PhysicsManager.getInstance().createJoint(jointDef);
+			jointDef.initialize(body, pComp.grabbed, pComp.grabbedPos);
+			pComp.joint = (WeldJoint) PhysicsManager.getInstance().createJoint(jointDef);
 			
 		}
 		
