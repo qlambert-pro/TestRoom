@@ -25,7 +25,7 @@ public class CharacterBuilder {
 		this.engine = engine;
 	}
 
-	public Entity build(Controller c, Vector2 p) {
+	public Entity build(Controller c, PlayerSystem ps, Vector2 p) {
 		Entity entity = new Entity();
 		
 		AnimationComponent animation = new AnimationComponent();
@@ -53,14 +53,10 @@ public class CharacterBuilder {
 		entity.add(texture);
 		
 		engine.addEntity(entity);
+				
+		c.addListener(new PlayerControls(ps, entity.getId()));
 		
-		GrapnelBuilder grapnelBuilder = new GrapnelBuilder(engine);
-		
-		PlayerSystem e = new PlayerSystem(entity, grapnelBuilder);
-		c.addListener(new PlayerControls(e));
-		engine.addSystem(e);
-		
-		PhysicsDataStructure s = new PhysicsDataStructure(new PhysicsCharacter(e),
+		PhysicsDataStructure s = new PhysicsDataStructure(new PhysicsCharacter(entity.getId(), ps),
 														  PhysicsObjectType.PLAYER);
 		position.body = PhysicsManager.getInstance().createDynamicCircle(
 				position.pos.cpy(), PlayerComponent.WIDTH/2, s);

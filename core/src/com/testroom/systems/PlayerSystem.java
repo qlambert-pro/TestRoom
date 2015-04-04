@@ -1,7 +1,13 @@
 package com.testroom.systems;
 
+import java.util.HashMap;
+
+import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.EntitySystem;
+import com.badlogic.ashley.core.Family;
+import com.badlogic.ashley.systems.IteratingSystem;
+import com.badlogic.ashley.utils.ImmutableArray;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -16,17 +22,34 @@ import com.testroom.objects.grapnel.GrapnelBuilder;
 import com.testroom.physics.PhysicsManager;
 
 
-public class PlayerSystem extends EntitySystem{
-	private Entity player;
-	
+public class PlayerSystem extends IteratingSystem{	
 	private GrapnelBuilder grapnelBuilder;
+	private HashMap<Long, Integer> ids = new HashMap<Long, Integer>();
 	
-	public PlayerSystem(Entity entity, GrapnelBuilder g) {
-		player = entity;
+	public PlayerSystem(GrapnelBuilder g) {
+		super(Family.getFor(PlayerComponent.class));	
+				
 		grapnelBuilder = g;
 	}
+	
+	@Override
+	public void addedToEngine (Engine engine) {
+		super.addedToEngine(engine);
+		
+		ImmutableArray<Entity> entities = getEntities();
+		
+		for(int i = 0; i < entities.size(); i++) {
+			ids.put(entities.get(i).getId(), i);
+		}
+	}
 
-	public void jump(float axis1, float axis2) {
+	public void jump(long id, float axis1, float axis2) {
+		ImmutableArray<Entity> entities = getEntities();
+		Entity player = entities.get(ids.get(id));
+			
+		if (player == null)
+			return;
+		
 		StateComponent sComp = player.getComponent(StateComponent.class);
 		MovementComponent mComp = player.getComponent(MovementComponent.class);
 		PlayerComponent pComp = player.getComponent(PlayerComponent.class);
@@ -52,12 +75,24 @@ public class PlayerSystem extends EntitySystem{
 		sComp.set(PlayerComponent.STATE_JUMP);
 	}
 	
-	public void grabbing() {
+	public void grabbing(long id) {
+		ImmutableArray<Entity> entities = getEntities();
+		Entity player = entities.get(ids.get(id));
+			
+		if (player == null)
+			return;
+		
 		StateComponent sComp = player.getComponent(StateComponent.class);
 		sComp.set(PlayerComponent.STATE_GRABBING); 
 	}
 
-	public void grab(Body grabbed, Vector2 pos) { 
+	public void grab(long id, Body grabbed, Vector2 pos) {
+		ImmutableArray<Entity> entities = getEntities();
+		Entity player = entities.get(ids.get(id));
+			
+		if (player == null)
+			return;
+		
 		StateComponent sComp = player.getComponent(StateComponent.class);
 		PlayerComponent pComp = player.getComponent(PlayerComponent.class);
 		
@@ -68,30 +103,13 @@ public class PlayerSystem extends EntitySystem{
 		}
 	}
 	
-	@Override
-	public void update(float dt){
-		super.update(dt);
-		
-		StateComponent sComp = player.getComponent(StateComponent.class);
-		PlayerComponent pComp = player.getComponent(PlayerComponent.class);
-		
-		Body body = player.getComponent(TransformComponent.class).body;
-		
-		if(sComp.get() == PlayerComponent.STATE_GRAB && pComp.joint == null) {
-			body.setAngularVelocity(0);
-			float angle = MathUtils.atan2(body.getWorldCenter().y - pComp.grabbedPos.y,
-										  body.getWorldCenter().x - pComp.grabbedPos.x) -
-										  MathUtils.atan2(1, 0);
-			body.setTransform(body.getWorldCenter(), angle);
-
-			WeldJointDef jointDef = new WeldJointDef();
-			jointDef.initialize(body, pComp.grabbed, pComp.grabbedPos);
-			pComp.joint = (WeldJoint) PhysicsManager.getInstance().createJoint(jointDef);
+	public void shootGrapnel (long id, float axis1, float axis2) {
+		ImmutableArray<Entity> entities = getEntities();
+		Entity player = entities.get(ids.get(id));
 			
-		}
-}
-	
-	public void shootGrapnel (float axis1, float axis2) {
+		if (player == null)
+			return;
+		
 		PlayerComponent pComp = player.getComponent(PlayerComponent.class);
 		
 		if (pComp.grapnel != null)
@@ -118,7 +136,13 @@ public class PlayerSystem extends EntitySystem{
 		tComp.body.applyForceToCenter(mCompGrap.velocity.cpy().scl(-1), true);
 	}
 	
-	public void recallGrapnel () {
+	public void recallGrapnel (long id) {
+		ImmutableArray<Entity> entities = getEntities();
+		Entity player = entities.get(ids.get(id));
+			
+		if (player == null)
+			return;
+		
 		PlayerComponent pComp = player.getComponent(PlayerComponent.class);
 		
 		if (pComp.grapnel == null)
@@ -134,15 +158,48 @@ public class PlayerSystem extends EntitySystem{
 		//destroy joints and all		
 	}
 
-	public boolean isGrapnel(Entity grapnel) {
+	public boolean isGrapnel(long id, Entity grapnel) {
+		ImmutableArray<Entity> entities = getEntities();
+		Entity player = entities.get(ids.get(id));
+			
+		if (player == null)
+			return false;
+		
 		PlayerComponent pComp = player.getComponent(PlayerComponent.class);
 		
 		return grapnel == pComp.grapnel;
 	}
 
-	public void destroyGrapnel() {
+	public void destroyGrapnel(long id) {
+		ImmutableArray<Entity> entities = getEntities();
+		Entity player = entities.get(ids.get(id));
+			
+		if (player == null)
+			return;
+		
 		PlayerComponent pComp = player.getComponent(PlayerComponent.class);
 		
 		pComp.grapnel = null;		
+	}
+
+	@Override
+	protected void processEntity(Entity entity, float deltaTime) {
+		
+		StateComponent sComp = entity.getComponent(StateComponent.class);
+		PlayerComponent pComp = entity.getComponent(PlayerComponent.class);
+		
+		Body body = entity.getComponent(TransformComponent.class).body;
+		
+		if(sComp.get() == PlayerComponent.STATE_GRAB && pComp.joint == null) {
+			body.setAngularVelocity(0);
+			float angle = MathUtils.atan2(body.getWorldCenter().y - pComp.grabbedPos.y,
+										  body.getWorldCenter().x - pComp.grabbedPos.x) -
+										  MathUtils.atan2(1, 0);
+			body.setTransform(body.getWorldCenter(), angle);
+
+			WeldJointDef jointDef = new WeldJointDef();
+			jointDef.initialize(body, pComp.grabbed, pComp.grabbedPos);
+			pComp.joint = (WeldJoint) PhysicsManager.getInstance().createJoint(jointDef);
+		}
 	}
 }

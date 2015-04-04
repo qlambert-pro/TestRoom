@@ -13,9 +13,11 @@ import com.testroom.systems.PlayerSystem;
 
 public class PhysicsCharacter implements PhysicsObject {
 	private PlayerSystem system;
+	long id;
 	
-	public PhysicsCharacter(PlayerSystem playerSystem) {
+	public PhysicsCharacter(long id, PlayerSystem playerSystem) {
 		system = playerSystem;
+		this.id = id;
 	}
 
 	@Override
@@ -23,13 +25,13 @@ public class PhysicsCharacter implements PhysicsObject {
 		if(struct.type == PhysicsObjectType.GRAPNEL) {
 			Entity grapnel = ((PhysicsGrapnel) struct.obj).getGrapnel();
 			StateComponent sComp = grapnel.getComponent(StateComponent.class);
-			if (system.isGrapnel(grapnel) && sComp.get() == GrapnelComponent.STATE_RECALL) {
-				system.destroyGrapnel();
+			if (system.isGrapnel(id, grapnel) && sComp.get() == GrapnelComponent.STATE_RECALL) {
+				system.destroyGrapnel(id);
 				((PhysicsGrapnel) struct.obj).destroyGrapnel();
 			}
 			return;
 		} else if (struct.type == PhysicsObjectType.SOLID) {
-			system.grab(((Edge) struct.obj).getBody(),
+			system.grab(id, ((Edge) struct.obj).getBody(),
 					contact.getWorldManifold().getPoints()[0]);	
 		}
 		

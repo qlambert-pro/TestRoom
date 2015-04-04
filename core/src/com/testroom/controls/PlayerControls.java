@@ -7,20 +7,24 @@ import com.testroom.systems.PlayerSystem;
 
 public class PlayerControls extends ControllerAdapter {
 	private PlayerSystem system;
+	private long id;
 	
-	public PlayerControls(PlayerSystem syst) {
+	public PlayerControls(PlayerSystem syst, long id) {
 		this.system = syst;
+		this.id = id;
 	}
 	
 	@Override
 	public boolean buttonDown (Controller controller, int buttonCode){
 		switch (buttonCode) {
 		case Xbox360Pad.BUTTON_A:
-			system.jump(controller.getAxis(Xbox360Pad.AXIS_LEFT_X),
+			system.jump(id,
+						controller.getAxis(Xbox360Pad.AXIS_LEFT_X),
 					    controller.getAxis(Xbox360Pad.AXIS_LEFT_Y));
 			return true;
 		case Xbox360Pad.BUTTON_RB:
-			system.shootGrapnel(controller.getAxis(Xbox360Pad.AXIS_LEFT_X),
+			system.shootGrapnel(id,
+								controller.getAxis(Xbox360Pad.AXIS_LEFT_X),
 					    		controller.getAxis(Xbox360Pad.AXIS_LEFT_Y));
 			return true;
 		}
@@ -32,10 +36,10 @@ public class PlayerControls extends ControllerAdapter {
 	public boolean buttonUp (Controller controller, int buttonCode){
 		switch (buttonCode) {
 		case Xbox360Pad.BUTTON_A:
-			system.grabbing();
+			system.grabbing(id);
 			return true;
 		case Xbox360Pad.BUTTON_RB:
-			system.recallGrapnel();
+			system.recallGrapnel(id);
 			return true;
 		}
 		

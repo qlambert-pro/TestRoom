@@ -2,6 +2,7 @@ package com.testroom.components;
 
 import com.badlogic.ashley.core.Component;
 import com.badlogic.ashley.core.Entity;
+import com.badlogic.gdx.controllers.Controller;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.joints.WeldJoint;
@@ -15,6 +16,8 @@ public class PlayerComponent extends Component {
 	public static final float WIDTH = 0.8f;
 	
 	public static final float MASS = 1.0f;
+	
+	public Controller c = null;
 	
 	public WeldJoint joint = null;
 	public Body grabbed = null;
