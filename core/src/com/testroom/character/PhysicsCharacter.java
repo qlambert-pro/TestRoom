@@ -30,7 +30,7 @@ public class PhysicsCharacter implements PhysicsObject {
 				((PhysicsGrapnel) struct.obj).destroyGrapnel();
 			}
 			return;
-		} else if (struct.type == PhysicsObjectType.SOLID) {
+		} else if (struct.type == PhysicsObjectType.SOLID && contact.getWorldManifold().getNumberOfContactPoints() > 0) {
 			system.grab(id, ((Edge) struct.obj).getBody(),
 					contact.getWorldManifold().getPoints()[0]);	
 		}

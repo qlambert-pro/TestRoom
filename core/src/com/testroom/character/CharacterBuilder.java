@@ -11,7 +11,6 @@ import com.testroom.components.StateComponent;
 import com.testroom.components.TextureComponent;
 import com.testroom.components.TransformComponent;
 import com.testroom.controls.PlayerControls;
-import com.testroom.objects.grapnel.GrapnelBuilder;
 import com.testroom.physics.PhysicsDataStructure;
 import com.testroom.physics.PhysicsManager;
 import com.testroom.physics.PhysicsObjectType;
@@ -60,6 +59,7 @@ public class CharacterBuilder {
 														  PhysicsObjectType.PLAYER);
 		position.body = PhysicsManager.getInstance().createDynamicCircle(
 				position.pos.cpy(), PlayerComponent.WIDTH/2, s);
+		PhysicsManager.getInstance().addSensor(position.body, 2*PlayerComponent.WIDTH);
 		
 		movement.velocity.scl(position.body.getMass());
 		position.body.setLinearVelocity(movement.velocity);

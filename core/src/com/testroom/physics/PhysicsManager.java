@@ -49,8 +49,13 @@ public class PhysicsManager {
 
 	public void clear() {
 		Array<Body> bodies = new Array<Body>();
-
-		/* Clear World */
+		Array<Joint> joints = new Array<Joint>();
+		
+		/* Clear World */		
+		world.getJoints(joints);
+		for (Joint j : joints)
+			world.destroyJoint(j);
+		
 		world.getBodies(bodies);
 		for (Body b : bodies)
 			world.destroyBody(b);
@@ -100,6 +105,19 @@ public class PhysicsManager {
 		return b;
 	}
 
+	public void addSensor(Body b, float size) {
+		CircleShape circle = new CircleShape();
+		circle.setRadius(size);
+		
+		FixtureDef sensor = new FixtureDef();
+		sensor.shape = circle;
+		sensor.isSensor = true;
+		sensor.density = 0;
+		
+		b.createFixture(sensor);
+	}
+	
+	
 	public Joint createJoint(JointDef jointDef) {
 		return world.createJoint(jointDef);		
 	}
