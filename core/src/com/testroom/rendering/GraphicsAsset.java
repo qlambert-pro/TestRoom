@@ -27,5 +27,6 @@ public class GraphicsAsset {
 		characterJump.setPlayMode(PlayMode.LOOP);
 		
 		grapnel = new Animation(0.2f, new TextureRegion(characAnim, 0, 1200, 400, 400), new TextureRegion(characAnim, 400, 1200, 400, 400));
+		grapnel.setPlayMode(PlayMode.LOOP);
 	}
 }
