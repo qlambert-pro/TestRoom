@@ -17,6 +17,7 @@ import com.testroom.components.MovementComponent;
 import com.testroom.components.PlayerComponent;
 import com.testroom.components.StateComponent;
 import com.testroom.components.TransformComponent;
+import com.testroom.configuration.ConfigManager;
 import com.testroom.objects.grapnel.GrapnelBuilder;
 import com.testroom.physics.PhysicsManager;
 
@@ -117,14 +118,16 @@ public class PlayerSystem extends IteratingSystem{
 		TransformComponent tComp = player.getComponent(TransformComponent.class);
 		MovementComponent mComp = player.getComponent(MovementComponent.class);
 		
+		Vector2 tmpEpsilon = new Vector2(axis2 * ConfigManager.epsilon,
+										-axis1 * ConfigManager.epsilon);
 		
-		pComp.grapnel = grapnelBuilder.build(tComp.body, tComp.pos.cpy());
+		pComp.grapnel = grapnelBuilder.build(tComp.body, tComp.pos.cpy().add(tmpEpsilon));
 		
 		TransformComponent tCompGrap = pComp.grapnel.getComponent(TransformComponent.class);
 		MovementComponent mCompGrap = pComp.grapnel.getComponent(MovementComponent.class);
 		
 		mCompGrap.velocity.set(axis2 * PlayerComponent.MOVE_VELOCITY,
-				   -axis1 * PlayerComponent.MOVE_VELOCITY);
+							-axis1 * PlayerComponent.MOVE_VELOCITY);
 		mCompGrap.velocity.scl(tCompGrap.body.getMass());
 		mCompGrap.velocity.add(mComp.velocity);
 				
