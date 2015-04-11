@@ -69,7 +69,7 @@ public class GrapnelBuilder {
 		jointDef.bodyA = position.body;
 		jointDef.bodyB = anchorPlayer;
 		jointDef.collideConnected = true;
-		jointDef.maxLength = GrapnelComponent.MAX_DISTANCE;
+		jointDef.maxLength = GrapnelComponent.MAX_DISTANCE * PhysicsManager.WORLD_TO_BOX;
 		
 		grapnel.grapnelJoint = (RopeJoint) PhysicsManager.getInstance().createJoint(jointDef);
 		

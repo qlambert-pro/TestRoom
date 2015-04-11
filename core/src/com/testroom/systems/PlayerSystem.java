@@ -112,8 +112,11 @@ public class PlayerSystem extends IteratingSystem{
 		
 		PlayerComponent pComp = player.getComponent(PlayerComponent.class);
 		
-		if (pComp.grapnel != null)
+		if (pComp.grapnel != null) {
+			GrapnelComponent gc = pComp.grapnel.getComponent(GrapnelComponent.class);
+			gc.grapnelJoint.setMaxLength(GrapnelComponent.MAX_DISTANCE);
 			return;
+		}
 		
 		TransformComponent tComp = player.getComponent(TransformComponent.class);
 		MovementComponent mComp = player.getComponent(MovementComponent.class);
