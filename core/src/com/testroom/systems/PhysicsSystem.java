@@ -3,11 +3,12 @@ package com.testroom.systems;
 import com.badlogic.ashley.core.ComponentMapper;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
+import com.badlogic.ashley.systems.IteratingSystem;
 import com.testroom.components.MovementComponent;
 import com.testroom.components.TransformComponent;
 import com.testroom.physics.PhysicsManager;
 
-public class PhysicsSystem extends DynamicallyIteratingSystem {
+public class PhysicsSystem extends IteratingSystem {
 	private ComponentMapper<TransformComponent> tm;
 	private ComponentMapper<MovementComponent> cm;
 	

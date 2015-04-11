@@ -2,12 +2,13 @@ package com.testroom.systems;
 
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
+import com.badlogic.ashley.systems.IteratingSystem;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.testroom.components.AnimationComponent;
 import com.testroom.components.StateComponent;
 import com.testroom.components.TextureComponent;
 
-public class AnimationSystem extends DynamicallyIteratingSystem {
+public class AnimationSystem extends IteratingSystem {
 	
 	public AnimationSystem() {
 		super(Family.getFor(TextureComponent.class,
