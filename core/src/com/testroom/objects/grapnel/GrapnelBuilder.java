@@ -42,7 +42,7 @@ public class GrapnelBuilder {
 		state.set(GrapnelComponent.STATE_THROW);
 		
 		position.pos.set(p);
-		position.scale.set(0.5f,0.5f);
+		position.scale.set(0.2f, 0.2f);
 		
 		entity.add(animation);
 		entity.add(grapnel);
@@ -61,8 +61,7 @@ public class GrapnelBuilder {
 				  										  PhysicsObjectType.GRAPNEL);
 		position.body = PhysicsManager.getInstance().createDynamicCircle(
 		position.pos.cpy(), GrapnelComponent.WIDTH/2, s);
-
-		movement.velocity.scl(position.body.getMass());		
+		
 		position.body.setAngularDamping(0);
 		
 		RopeJointDef jointDef = new RopeJointDef();

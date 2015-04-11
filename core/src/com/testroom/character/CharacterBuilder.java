@@ -39,6 +39,8 @@ public class CharacterBuilder {
 		animation.animations.put(PlayerComponent.STATE_JUMP, GraphicsAsset.characterJump);
 		
 		position.pos.set(p);
+		position.scale.set(0.8f, 0.8f);
+		
 		movement.velocity.set(0.0f * PlayerComponent.MOVE_VELOCITY,
 							  1.0f * PlayerComponent.MOVE_VELOCITY);
 		 

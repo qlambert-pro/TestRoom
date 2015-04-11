@@ -28,7 +28,7 @@ public class GrapnelSystem extends DynamicallyIteratingSystem {
 		
 		Body body = grapnel.getComponent(TransformComponent.class).body;
 		
-		if(sComp.get() == GrapnelComponent.STATE_THROW) {
+		if(sComp.get() != GrapnelComponent.STATE_GRAB) {
 			sComp.set(GrapnelComponent.STATE_GRAB);
 			body.setAngularVelocity(0);
 
@@ -58,7 +58,7 @@ public class GrapnelSystem extends DynamicallyIteratingSystem {
 		StateComponent sc = entity.getComponent(StateComponent.class);
 		
 		if (sc.get() == GrapnelComponent.STATE_RECALL) {
-			float length = gc.grapnelJoint.getMaxLength() - GrapnelComponent.RECALL_VELOCITY * deltaTime;
+			float length = gc.grapnelJoint.getMaxLength() - PhysicsManager.WORLD_TO_BOX * GrapnelComponent.RECALL_VELOCITY * deltaTime;
 			if (length < 0)
 				length = 0;
 			gc.grapnelJoint.setMaxLength(length);

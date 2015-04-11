@@ -157,10 +157,12 @@ public class PlayerSystem extends IteratingSystem{
 		gComp.set(GrapnelComponent.STATE_RECALL);
 	}
 	
-	public void detachGrapnel () {
-		// TODO
-		//engine.getSystem(GrapnelSystem.class).setProcessing(true);
-		//destroy joints and all		
+	public void detachGrapnel (long id) {
+		ImmutableArray<Entity> entities = getEntities();
+		Entity player = entities.get(ids.get(id));
+		PlayerComponent pComp = player.getComponent(PlayerComponent.class);
+		
+		
 	}
 
 	public boolean isGrapnel(long id, Entity grapnel) {
