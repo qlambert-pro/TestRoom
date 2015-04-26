@@ -17,5 +17,7 @@ public class ConfigManager {
 	
 	/* Camera settings */
 	public static float camWidth = 32;
-	public static float camHeight = 18;	
+	public static float camHeight = 18;
+
+	public static float springStiffness = 25f;
 }

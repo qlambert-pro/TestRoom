@@ -24,8 +24,9 @@ public class PhysicsCharacter implements PhysicsObject {
 	public void BeginContactHandler(PhysicsDataStructure struct, Contact contact) {
 		if(struct.type == PhysicsObjectType.GRAPNEL) {
 			Entity grapnel = ((PhysicsGrapnel) struct.obj).getGrapnel();
-			StateComponent sComp = grapnel.getComponent(StateComponent.class);
-			if (system.isGrapnel(id, grapnel) && sComp.get() == GrapnelComponent.STATE_RECALL) {
+			GrapnelComponent gc = grapnel.getComponent(GrapnelComponent.class);
+			if (system.isGrapnel(id, grapnel) &&
+					gc.RopeSpringState == GrapnelComponent.STATE_RECALL) {
 				system.destroyGrapnel(id);
 				((PhysicsGrapnel) struct.obj).destroyGrapnel();
 			}

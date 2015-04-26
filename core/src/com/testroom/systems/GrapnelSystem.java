@@ -11,6 +11,7 @@ import com.badlogic.gdx.physics.box2d.joints.WeldJointDef;
 import com.testroom.components.GrapnelComponent;
 import com.testroom.components.StateComponent;
 import com.testroom.components.TransformComponent;
+import com.testroom.configuration.ConfigManager;
 import com.testroom.physics.PhysicsManager;
 
 public class GrapnelSystem extends IteratingSystem {
@@ -40,6 +41,12 @@ public class GrapnelSystem extends IteratingSystem {
 	
 	public void release(Entity grapnel) {
 		GrapnelComponent gm = grapnel.getComponent(GrapnelComponent.class);
+		StateComponent sComp = grapnel.getComponent(StateComponent.class);
+
+		sComp.set(GrapnelComponent.STATE_UNGRAB);
+
+		if (gm.joint == null)
+			return;
 		
 		PhysicsManager.getInstance().destroyJoint(gm.joint);
 		gm.joint = null;
@@ -58,25 +65,21 @@ public class GrapnelSystem extends IteratingSystem {
 		TransformComponent tc = entity.getComponent(TransformComponent.class);
 		StateComponent sc = entity.getComponent(StateComponent.class);
 		
-		if (sc.get() == GrapnelComponent.STATE_RECALL) {
-			float length = gc.grapnelJoint.getMaxLength() - PhysicsManager.WORLD_TO_BOX * GrapnelComponent.RECALL_VELOCITY * deltaTime;
-			if (length < 0)
-				length = 0;
-			gc.grapnelJoint.setMaxLength(length);
+		if (gc.RopeSpringState == GrapnelComponent.STATE_RECALL) {
+			gc.length0 = gc.length0 - PhysicsManager.WORLD_TO_BOX * GrapnelComponent.RECALL_VELOCITY * deltaTime;
+			if (gc.length0 < 0)
+				gc.length0 = 0;
 		}
 		
+		applyRopeSpringForce(tc.body, gc.player, gc.length0);
+
 		if (gc.jointDef != null) {
 			tc.body.setFixedRotation(true);
 			gc.joint = (WeldJoint) PhysicsManager.getInstance().createJoint(gc.jointDef);
 			gc.jointDef = null;
 		}
 		
-		if (gc.isDestroyed) {			
-			if (gc.grapnelJoint != null) {
-				PhysicsManager.getInstance().destroyJoint(gc.grapnelJoint);
-				gc.grapnelJoint = null;
-			}
-			
+		if (gc.isDestroyed) {
 			if (gc.joint != null) {
 				PhysicsManager.getInstance().destroyJoint(gc.joint);
 				gc.joint = null;
@@ -84,6 +87,19 @@ public class GrapnelSystem extends IteratingSystem {
 			PhysicsManager.getInstance().destroyBody(entity.getComponent(TransformComponent.class).body);
 			
 			engine.removeEntity(entity);
+		}
+	}
+
+
+	public void applyRopeSpringForce (Body bodyA, Body bodyB, float length0) {
+		Vector2 force = bodyA.getWorldCenter().cpy().sub(bodyB.getWorldCenter());
+		float length = force.len();
+
+		force.scl(ConfigManager.springStiffness * (length0 - length) /length);
+
+		if (length > length0) {
+			bodyA.applyForceToCenter(force, true);
+			bodyB.applyForceToCenter(force.scl(-1), true);
 		}
 	}
 

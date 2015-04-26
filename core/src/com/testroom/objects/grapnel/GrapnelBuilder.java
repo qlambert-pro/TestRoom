@@ -36,10 +36,9 @@ public class GrapnelBuilder {
 		TextureComponent texture = new TextureComponent();
 		
 		animation.animations.put(GrapnelComponent.STATE_GRAB, GraphicsAsset.grapnel);
-		animation.animations.put(GrapnelComponent.STATE_RECALL, GraphicsAsset.grapnel);
-		animation.animations.put(GrapnelComponent.STATE_THROW, GraphicsAsset.grapnel);
+		animation.animations.put(GrapnelComponent.STATE_UNGRAB, GraphicsAsset.grapnel);
 		
-		state.set(GrapnelComponent.STATE_THROW);
+		state.set(GrapnelComponent.STATE_UNGRAB);
 		
 		position.pos.set(p);
 		position.scale.set(0.2f, 0.2f);
@@ -60,17 +59,12 @@ public class GrapnelBuilder {
 		PhysicsDataStructure s = new PhysicsDataStructure(new PhysicsGrapnel(entity, grapnelSystem),
 				  										  PhysicsObjectType.GRAPNEL);
 		position.body = PhysicsManager.getInstance().createDynamicCircle(
-		position.pos.cpy(), GrapnelComponent.WIDTH/2, s);
+						position.pos.cpy(), GrapnelComponent.WIDTH/2, s);
 		
 		position.body.setAngularDamping(0);
+
+		grapnel.player = anchorPlayer;
 		
-		RopeJointDef jointDef = new RopeJointDef();
-		jointDef.bodyA = position.body;
-		jointDef.bodyB = anchorPlayer;
-		jointDef.collideConnected = true;
-		jointDef.maxLength = GrapnelComponent.MAX_DISTANCE * PhysicsManager.WORLD_TO_BOX;
-		
-		grapnel.grapnelJoint = (RopeJoint) PhysicsManager.getInstance().createJoint(jointDef);
 		
 		return entity;
 	}

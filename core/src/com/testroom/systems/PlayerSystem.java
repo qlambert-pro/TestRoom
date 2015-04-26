@@ -114,7 +114,8 @@ public class PlayerSystem extends IteratingSystem{
 		
 		if (pComp.grapnel != null) {
 			GrapnelComponent gc = pComp.grapnel.getComponent(GrapnelComponent.class);
-			gc.grapnelJoint.setMaxLength(GrapnelComponent.MAX_DISTANCE);
+			gc.length0 = GrapnelComponent.MAX_DISTANCE * PhysicsManager.WORLD_TO_BOX;
+			gc.RopeSpringState = GrapnelComponent.STATE_THROW;
 			return;
 		}
 		
@@ -153,8 +154,8 @@ public class PlayerSystem extends IteratingSystem{
 		if (pComp.grapnel == null)
 			return;
 		
-		StateComponent gComp = pComp.grapnel.getComponent(StateComponent.class);
-		gComp.set(GrapnelComponent.STATE_RECALL);
+		GrapnelComponent gc = pComp.grapnel.getComponent(GrapnelComponent.class);
+		gc.RopeSpringState = GrapnelComponent.STATE_RECALL;
 	}
 	
 	public void detachGrapnel (long id) {
