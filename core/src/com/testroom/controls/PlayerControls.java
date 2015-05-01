@@ -19,13 +19,13 @@ public class PlayerControls extends ControllerAdapter {
 		switch (buttonCode) {
 		case Xbox360Pad.BUTTON_A:
 			system.jump(id,
-						controller.getAxis(Xbox360Pad.AXIS_LEFT_Y),
-						-controller.getAxis(Xbox360Pad.AXIS_LEFT_X));
+					controller.getAxis(Xbox360Pad.AXIS_LEFT_X),
+					controller.getAxis(Xbox360Pad.AXIS_LEFT_Y));
 			return true;
 		case Xbox360Pad.BUTTON_RB:
 			system.shootGrapnel(id,
-								controller.getAxis(Xbox360Pad.AXIS_LEFT_Y),
-								-controller.getAxis(Xbox360Pad.AXIS_LEFT_X));
+					controller.getAxis(Xbox360Pad.AXIS_LEFT_X),
+					controller.getAxis(Xbox360Pad.AXIS_LEFT_Y));
 			return true;
 		}
 		
