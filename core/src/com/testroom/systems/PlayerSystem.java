@@ -60,8 +60,8 @@ public class PlayerSystem extends IteratingSystem{
 			PhysicsManager.getInstance().destroyJoint(pComp.joint);
 			pComp.joint = null;
 						
-			mComp.velocity.set(axis2 * PlayerComponent.MOVE_VELOCITY,
-					   -axis1 * PlayerComponent.MOVE_VELOCITY);
+			mComp.velocity.set(axis1 * PlayerComponent.MOVE_VELOCITY,
+					    axis2 * PlayerComponent.MOVE_VELOCITY);
 			mComp.velocity.scl(body.getMass());
 			
 			body.setAngularVelocity(0);
@@ -122,16 +122,16 @@ public class PlayerSystem extends IteratingSystem{
 		TransformComponent tComp = player.getComponent(TransformComponent.class);
 		MovementComponent mComp = player.getComponent(MovementComponent.class);
 		
-		Vector2 tmpEpsilon = new Vector2(axis2 * ConfigManager.epsilon,
-										-axis1 * ConfigManager.epsilon);
+		Vector2 tmpEpsilon = new Vector2(axis1 * ConfigManager.epsilon,
+										 axis2 * ConfigManager.epsilon);
 		
 		pComp.grapnel = grapnelBuilder.build(tComp.body, tComp.pos.cpy().add(tmpEpsilon));
 		
 		TransformComponent tCompGrap = pComp.grapnel.getComponent(TransformComponent.class);
 		MovementComponent mCompGrap = pComp.grapnel.getComponent(MovementComponent.class);
 		
-		mCompGrap.velocity.set(axis2 * PlayerComponent.MOVE_VELOCITY,
-							-axis1 * PlayerComponent.MOVE_VELOCITY);
+		mCompGrap.velocity.set(axis1 * PlayerComponent.MOVE_VELOCITY,
+							 axis2 * PlayerComponent.MOVE_VELOCITY);
 		mCompGrap.velocity.scl(tCompGrap.body.getMass());
 		mCompGrap.velocity.add(mComp.velocity);
 				
