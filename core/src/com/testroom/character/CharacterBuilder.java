@@ -59,7 +59,7 @@ public class CharacterBuilder {
 		
 		PhysicsDataStructure s = new PhysicsDataStructure(new PhysicsCharacter(entity.getId(), ps),
 														  PhysicsObjectType.PLAYER);
-		position.body = PhysicsManager.getInstance().createDynamicCircle(
+		position.body = PhysicsManager.getInstance().createPlayer(
 				position.pos.cpy(), PlayerComponent.WIDTH/2, s);
 		PhysicsManager.getInstance().addSensor(position.body, 2*PlayerComponent.WIDTH);
 		

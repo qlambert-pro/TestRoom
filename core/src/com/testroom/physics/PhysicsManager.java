@@ -61,7 +61,30 @@ public class PhysicsManager {
 			world.destroyBody(b);
 	}
 
-	public Body createDynamicCircle(Vector2 pos, float size,
+	public Body createPlayer(Vector2 pos, float size,
+			PhysicsDataStructure s) {
+		BodyDef bodyDef = new BodyDef();
+		bodyDef.position.set(WORLD_TO_BOX * pos.x, WORLD_TO_BOX * pos.y);
+		bodyDef.type = BodyType.DynamicBody;
+		bodyDef.fixedRotation = false;
+		Body b = world.createBody(bodyDef);
+
+		CircleShape circle = new CircleShape();
+		circle.setRadius(size);
+
+		FixtureDef fixtureDef = new FixtureDef();
+		fixtureDef.shape = circle;
+
+		fixtureDef.density = 1.0f;
+		fixtureDef.friction = 0.0f;
+		fixtureDef.restitution = 0f;
+
+		b.createFixture(fixtureDef);
+		b.setUserData(s);
+		return b;
+	}
+	
+	public Body createGrapnel(Vector2 pos, float size,
 			PhysicsDataStructure s) {
 		BodyDef bodyDef = new BodyDef();
 		bodyDef.position.set(WORLD_TO_BOX * pos.x, WORLD_TO_BOX * pos.y);

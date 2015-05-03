@@ -130,12 +130,12 @@ public class PlayerSystem extends IteratingSystem{
 		TransformComponent tCompGrap = pComp.grapnel.getComponent(TransformComponent.class);
 		MovementComponent mCompGrap = pComp.grapnel.getComponent(MovementComponent.class);
 		
-		mCompGrap.velocity.set(axis1 * PlayerComponent.MOVE_VELOCITY,
-							 axis2 * PlayerComponent.MOVE_VELOCITY);
+		mCompGrap.velocity.set(axis1, axis2);
+		mCompGrap.velocity.scl(GrapnelComponent.MOVE_VELOCITY / mCompGrap.velocity.len());
 		mCompGrap.velocity.scl(tCompGrap.body.getMass());
 		mCompGrap.velocity.add(mComp.velocity);
 				
-		float angle = MathUtils.atan2(mCompGrap.velocity.y, mCompGrap.velocity.x) - MathUtils.atan2(1, 0);
+		float angle = MathUtils.atan2(-mCompGrap.velocity.y, -mCompGrap.velocity.x) - MathUtils.atan2(1, 0);
 		tCompGrap.body.setTransform(tCompGrap.body.getWorldCenter(), angle);
 		tCompGrap.body.applyForceToCenter(mCompGrap.velocity.cpy(), true);
 		

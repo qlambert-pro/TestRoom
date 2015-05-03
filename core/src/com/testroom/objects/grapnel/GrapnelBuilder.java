@@ -58,7 +58,7 @@ public class GrapnelBuilder {
 		
 		PhysicsDataStructure s = new PhysicsDataStructure(new PhysicsGrapnel(entity, grapnelSystem),
 				  										  PhysicsObjectType.GRAPNEL);
-		position.body = PhysicsManager.getInstance().createDynamicCircle(
+		position.body = PhysicsManager.getInstance().createGrapnel(
 						position.pos.cpy(), GrapnelComponent.WIDTH/2, s);
 		
 		position.body.setAngularDamping(0);
